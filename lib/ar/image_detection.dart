@@ -17,6 +17,15 @@ class ImageDetectionPageState extends State<ImageDetectionPage> {
   bool anchorWasFound = false;
   String? referenceImageName;
 
+  static String mars =
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/OSIRIS_Mars_true_color.jpg/800px-OSIRIS_Mars_true_color.jpg';
+  static String earth =
+      'https://upload.wikimedia.org/wikipedia/commons/c/cb/The_Blue_Marble_%28remastered%29.jpg';
+  static String bee =
+      'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4';
+  static String butterfly =
+      'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4';
+
   @override
   void dispose() {
     timer?.cancel();
@@ -31,15 +40,13 @@ class ImageDetectionPageState extends State<ImageDetectionPage> {
           fit: StackFit.expand,
           children: [
             ARKitSceneView(
-              detectionImages: const [
+              detectionImages: [
                 ARKitReferenceImage(
-                  name:
-                      'https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/OSIRIS_Mars_true_color.jpg/800px-OSIRIS_Mars_true_color.jpg',
+                  name: mars,
                   physicalWidth: 0.2,
                 ),
                 ARKitReferenceImage(
-                  name:
-                      'https://upload.wikimedia.org/wikipedia/commons/c/cb/The_Blue_Marble_%28remastered%29.jpg',
+                  name: earth,
                   physicalWidth: 0.8,
                 )
               ],
@@ -73,29 +80,32 @@ class ImageDetectionPageState extends State<ImageDetectionPage> {
 
       referenceImageName = anchor.referenceImageName;
 
-      final material = ARKitMaterial(
-        lightingModelName: ARKitLightingModel.lambert,
-        diffuse: ARKitMaterialProperty.image('assets/earth.jpg'),
+      final video = ARKitMaterialProperty.video(
+        url: anchor.referenceImageName == mars ? bee : butterfly,
+        width: 640,
+        height: 320,
+        autoplay: true,
       );
-      final sphere = ARKitSphere(
+
+      final material = ARKitMaterial(
+        diffuse: video,
+        doubleSided: true,
+      );
+
+      final plane = ARKitPlane(
+        width: 0.5,
+        height: 0.3,
         materials: [material],
-        radius: 0.1,
       );
 
       final earthPosition = anchor.transform.getColumn(3);
       final node = ARKitNode(
-        geometry: sphere,
+        geometry: plane,
         position:
             vector.Vector3(earthPosition.x, earthPosition.y, earthPosition.z),
-        eulerAngles: vector.Vector3.zero(),
+        eulerAngles: vector.Vector3(0, 0, 0),
       );
       arkitController.add(node);
-
-      timer = Timer.periodic(const Duration(milliseconds: 50), (timer) {
-        final old = node.eulerAngles;
-        final eulerAngles = vector.Vector3(old.x + 0.01, old.y, old.z);
-        node.eulerAngles = eulerAngles;
-      });
     }
   }
 }
