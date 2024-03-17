@@ -1,4 +1,5 @@
 import 'package:brachio_arkit_demo/ar/helloworld.dart';
+import 'package:brachio_arkit_demo/ar/plane_detection.dart';
 import 'package:brachio_arkit_demo/route_list.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -15,6 +16,10 @@ final _router = GoRouter(
     GoRoute(
       path: '/helloworld',
       builder: (context, state) => const ARKitHelloWorld(),
+    ),
+    GoRoute(
+      path: '/plane_detection',
+      builder: (context, state) => const PlaneDetectionPage(),
     ),
   ],
 );
