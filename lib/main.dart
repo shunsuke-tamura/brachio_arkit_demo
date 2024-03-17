@@ -1,3 +1,4 @@
+import 'package:brachio_arkit_demo/ar/face_detection.dart';
 import 'package:brachio_arkit_demo/ar/helloworld.dart';
 import 'package:brachio_arkit_demo/ar/plane_detection.dart';
 import 'package:brachio_arkit_demo/route_list.dart';
@@ -21,6 +22,10 @@ final _router = GoRouter(
       path: '/plane_detection',
       builder: (context, state) => const PlaneDetectionPage(),
     ),
+    GoRoute(
+      path: '/face_detection',
+      builder: (context, state) => const FaceDetectionPage(),
+    )
   ],
 );
 
