@@ -15,6 +15,7 @@ class ImageDetectionPageState extends State<ImageDetectionPage> {
   late ARKitController arkitController;
   Timer? timer;
   bool anchorWasFound = false;
+  String? referenceImageName;
 
   @override
   void dispose() {
@@ -36,21 +37,27 @@ class ImageDetectionPageState extends State<ImageDetectionPage> {
                       'https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/OSIRIS_Mars_true_color.jpg/800px-OSIRIS_Mars_true_color.jpg',
                   physicalWidth: 0.2,
                 ),
+                ARKitReferenceImage(
+                  name:
+                      'https://upload.wikimedia.org/wikipedia/commons/c/cb/The_Blue_Marble_%28remastered%29.jpg',
+                  physicalWidth: 0.8,
+                )
               ],
+              // detectionImagesGroupName: 'AR Marker',
               onARKitViewCreated: onARKitViewCreated,
             ),
-            anchorWasFound
-                ? Container()
-                : Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Point the camera at the earth image from the article about Earth on Wikipedia.',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall
-                          ?.copyWith(color: Colors.white),
-                    ),
-                  ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                !anchorWasFound
+                    ? 'Point the camera at the image from the article about Mars on Wikipedia.'
+                    : 'Found: $referenceImageName',
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineSmall
+                    ?.copyWith(color: Colors.white),
+              ),
+            ),
           ],
         ),
       );
@@ -63,6 +70,8 @@ class ImageDetectionPageState extends State<ImageDetectionPage> {
   void onAnchorWasFound(ARKitAnchor anchor) {
     if (anchor is ARKitImageAnchor) {
       setState(() => anchorWasFound = true);
+
+      referenceImageName = anchor.referenceImageName;
 
       final material = ARKitMaterial(
         lightingModelName: ARKitLightingModel.lambert,
