@@ -24,6 +24,10 @@ class RouteListPage extends StatelessWidget {
             title: const Text('Face Detection'),
             onTap: () => context.go('/face_detection'),
           ),
+          ListTile(
+            title: const Text('Image Detection'),
+            onTap: () => context.go('/image_detection'),
+          ),
         ],
       ),
     );

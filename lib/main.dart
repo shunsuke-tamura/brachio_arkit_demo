@@ -1,5 +1,6 @@
 import 'package:brachio_arkit_demo/ar/face_detection.dart';
 import 'package:brachio_arkit_demo/ar/helloworld.dart';
+import 'package:brachio_arkit_demo/ar/image_detection.dart';
 import 'package:brachio_arkit_demo/ar/plane_detection.dart';
 import 'package:brachio_arkit_demo/route_list.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,11 @@ final _router = GoRouter(
     GoRoute(
       path: '/face_detection',
       builder: (context, state) => const FaceDetectionPage(),
-    )
+    ),
+    GoRoute(
+      path: '/image_detection',
+      builder: (context, state) => const ImageDetectionPage(),
+    ),
   ],
 );
 
